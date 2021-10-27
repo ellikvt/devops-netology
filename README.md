@@ -1,7 +1,14 @@
 # devops-netology
-Tue Oct 26 07:51:41 UTC 2021 | I have modified the file
-Tue Oct 26 07:58:30 UTC 2021 | I have modified the file after "git add" command was implemented to it
-Tue Oct 26 21:14:49 UTC 2021 | I have modified the file after "git restore --staged README.md" was implemented to it
+
+Created by: Tormyshev Vadim / Тормышев Вадим
+
+Домашнее задание к занятию «2.1. Системы контроля версий.»
+----------------------------------------------------------
+----------------------------------------------------------
+
+Tue Oct 26 07:51:41 UTC 2021 | I have modified the file  
+Tue Oct 26 07:58:30 UTC 2021 | I have modified the file after "git add" command was implemented to it  
+Tue Oct 26 21:14:49 UTC 2021 | I have modified the file after "git restore --staged README.md" was implemented to it  
 
 После создания каталога terraform и добавления в него файла
  .gitignore, содержащего описания правил игнорирования, будут проигнорированы
