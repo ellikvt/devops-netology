@@ -10,7 +10,7 @@ Tue Oct 26 21:14:49 UTC 2021 | I have modified the file after "git restore --sta
 каждый путь, который будет начинаться внутри каталога terraform и будет иметь
 имя каталога ".terraform" в конце и любые типы/количество файлов в каталоге ".terraform"
 
-файл ./terraform/crash.log внутри каталога terraform
+файл ./terraform/crash.log 
 
 все файлы каталога terraform, которые будут иметь расширение "tfvars"
 
