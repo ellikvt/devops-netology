@@ -17,3 +17,5 @@ Tue Oct 26 21:14:49 UTC 2021 | I have modified the file after "git restore --sta
 '_override.tf', '_override.tf.json'
 
 файлы '.terraformrc', 'terraform.rc' в каталоге terraform
+
+Tue Nov  2 22:01:12 UTC 2021 | line added by me
