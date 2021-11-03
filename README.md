@@ -19,3 +19,5 @@ Tue Oct 26 21:14:49 UTC 2021 | I have modified the file after "git restore --sta
 файлы '.terraformrc', 'terraform.rc' в каталоге terraform
 
 Tue Nov  2 22:01:12 UTC 2021 | line added by me
+Wed Nov  3 00:02:24 UTC 2021 | The repository was added to IDE Pycharm and the project was created
+
