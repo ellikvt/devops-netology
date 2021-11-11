@@ -248,11 +248,11 @@ plugins.go:2
  git log -L:globalPluginDirs:plugins.go && git log -L:globalPluginDirs:internal/command/cliconfig/config_unix.go && git log -L:globalPluginDirs:commands.go
 ```
   и получим эти 5 коммитов:
-  78b12205587fe839f10d946ea3fdc06719decb05
-  52dbf94834cb970b510f2fba853a5b49ad9b1a46
-  41ab0aef7a0fe030e84018973a64135b11abcd70
-  66ebff90cdfaa6938f26f908c7ebad8d547fea17
-  8364383c359a6b738a436d1b7745ccdce178df47
+  78b12205587fe839f10d946ea3fdc06719decb05  
+  52dbf94834cb970b510f2fba853a5b49ad9b1a46  
+  41ab0aef7a0fe030e84018973a64135b11abcd70  
+  66ebff90cdfaa6938f26f908c7ebad8d547fea17  
+  8364383c359a6b738a436d1b7745ccdce178df47  
   
 7. Используем git log: 
 ```bash
