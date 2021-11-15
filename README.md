@@ -356,5 +356,177 @@ index 000000000..2533d1316
 +}
 ```
 таким образом здесь можно адресовать свои вопросы только товарищу Martin Atkins.
+  
+Домашнее задание к занятию «3.1. Работа в терминале, лекция 1»
+----------------------------------------------------------
+----------------------------------------------------------
+  
+Операционная система на хосте - Ubuntu 18.03 LTS:
+![YandexVM Ubuntu 18.04](03-sysadmin-01-terminal/img/00-yvm.png)
+   
+1. Установлена VirtualBox: 
+  ![Oracle VB installed](03-sysadmin-01-terminal/img/01-vb-installed.png) 
+  
+2. Установлен Vagrant:
+  ![Vagrant installed](03-sysadmin-01-terminal/img/02-installed-vagrant.png)
+  
+3. Используем встроенный терминал и мультиплексор tmux:
+  ![terminal+tmux](03-sysadmin-01-terminal/img/04-term+tmux.png)
+  
+4. Конфигурирование Vagrantfile и запуск ВМ:
+   ![vagrand up](03-sysadmin-01-terminal/img/05-first-vagrant-up.png)
+  
+   Запуск невозможен, т.к. вложенная виртуализация не поддерживается:
+   ![VT-x issue](03-sysadmin-01-terminal/img/05-virt-box-crash.png)
+  
+  Я ограничен в аппаратных ресурсах, так как нахожусь в командировке на морском объекте.
+  Я написал координатору об этом и ответа не получил пока. Все чем я могу пользоватся
+  в ближейший месяц - это платформы виртуализации. Поэтому я выполняю задания на 
+  арендованных YandexVM. Вложенная виртуализация не поддерживается, о чем есть письмо
+  из их техподдержки. Компьютера с платформой, которая совместима с 
+  hardware virtualization technology у меня здесь нет. На рабочие машины ставить ничего 
+  не разрешается. Поэтому дальнейшие шаги задания выполняю на Яндекс ВМ Ubuntu 20.04.
+  Предыдущие задания по курсу выполнены также на этой ВМ.
+  
+5. Перечень аппратных ресурсов можно получить их сведений о ВМ, выполнив:
+```bash
 
+$ VBoxManage showvminfo vagrant_getting_started_default_1636852324301_49394 
+ 
+Name:                        vagrant_getting_started_default_1636852324301_49394
+Groups:                      /
+Guest OS:                    Ubuntu (64-bit)
+UUID:                        b65d3b19-7987-4caf-83fb-87bae95a2959
+Config file:                 /home/vadim/VirtualBox VMs/vagrant_getting_started_default_1636852324301_49394/vagrant_getting_started_default_1636852324301_49394.vbox
+Snapshot folder:             /home/vadim/VirtualBox VMs/vagrant_getting_started_default_1636852324301_49394/Snapshots
+Log folder:                  /home/vadim/VirtualBox VMs/vagrant_getting_started_default_1636852324301_49394/Logs
+Hardware UUID:               b65d3b19-7987-4caf-83fb-87bae95a2959
+Memory size:                 1024MB
+Page Fusion:                 disabled
+VRAM size:                   4MB
+CPU exec cap:                100%
+HPET:                        disabled
+CPUProfile:                  host
+Chipset:                     piix3
+Firmware:                    BIOS
+Number of CPUs:              2
+PAE:                         enabled
+Long Mode:                   enabled
+Triple Fault Reset:          disabled
+APIC:                        enabled
+X2APIC:                      enabled
+Nested VT-x/AMD-V:           disabled
+CPUID Portability Level:     0
+CPUID overrides:             None
+Boot menu mode:              message and menu
+Boot Device 1:               HardDisk
+Boot Device 2:               DVD
+Boot Device 3:               Not Assigned
+Boot Device 4:               Not Assigned
+ACPI:                        enabled
+IOAPIC:                      enabled
+BIOS APIC mode:              APIC
+Time offset:                 0ms
+RTC:                         UTC
+Hardware Virtualization:     enabled
+Nested Paging:               enabled
+Large Pages:                 enabled
+VT-x VPID:                   enabled
+VT-x Unrestricted Exec.:     enabled
+Paravirt. Provider:          Default
+Effective Paravirt. Prov.:   KVM
+State:                       powered off (since 2021-11-14T14:07:41.000000000)
+Graphics Controller:         VBoxVGA
+Monitor count:               1
+3D Acceleration:             disabled
+2D Video Acceleration:       disabled
+Teleporter Enabled:          disabled
+Teleporter Port:             0
+Teleporter Address:          
+Teleporter Password:         
+Tracing Enabled:             disabled
+Allow Tracing to Access VM:  disabled
+Tracing Configuration:       
+Autostart Enabled:           disabled
+Autostart Delay:             0
+Default Frontend:            
+VM process priority:         default
+Storage Controller Name (0):            IDE Controller
+Storage Controller Type (0):            PIIX4
+Storage Controller Instance Number (0): 0
+Storage Controller Max Port Count (0):  2
+Storage Controller Port Count (0):      2
+Storage Controller Bootable (0):        on
+Storage Controller Name (1):            SATA Controller
+Storage Controller Type (1):            IntelAhci
+Storage Controller Instance Number (1): 0
+Storage Controller Max Port Count (1):  30
+Storage Controller Port Count (1):      1
+Storage Controller Bootable (1):        on
+SATA Controller (0, 0): /home/vadim/VirtualBox VMs/vagrant_getting_started_default_1636852324301_49394/ubuntu-20.04-amd64-disk001.vmdk (UUID: ab7d8c05-321c-40b0-9b04-d7bd13e7dda4)
+NIC 1:                       MAC: 0800277360CF, Attachment: NAT, Cable connected: on, Trace: off (file: none), Type: 82540EM, Reported speed: 0 Mbps, Boot priority: 0, Promisc Policy: deny, Bandwidth group: none
+NIC 1 Settings:  MTU: 0, Socket (send: 64, receive: 64), TCP Window (send:64, receive: 64)
+NIC 1 Rule(0):   name = ssh, protocol = tcp, host ip = 127.0.0.1, host port = 2222, guest ip = , guest port = 22
+NIC 2:                       disabled
+NIC 3:                       disabled
+NIC 4:                       disabled
+NIC 5:                       disabled
+NIC 6:                       disabled
+NIC 7:                       disabled
+NIC 8:                       disabled
+Pointing Device:             PS/2 Mouse
+Keyboard Device:             PS/2 Keyboard
+UART 1:                      disabled
+UART 2:                      disabled
+UART 3:                      disabled
+UART 4:                      disabled
+LPT 1:                       disabled
+LPT 2:                       disabled
+Audio:                       disabled
+Audio playback:              disabled
+Audio capture:               disabled
+Clipboard Mode:              disabled
+Drag and drop Mode:          disabled
+VRDE:                        enabled (Address 127.0.0.1, Ports 5996, MultiConn: off, ReuseSingleConn: off, Authentication type: null)
+Video redirection:           disabled
+OHCI USB:                    disabled
+EHCI USB:                    disabled
+xHCI USB:                    disabled
 
+USB Device Filters:
+
+<none>
+
+Bandwidth groups:  <none>
+
+Shared folders:
+
+Name: 'vagrant', Host path: '/home/vadim/vagrant_getting_started' (machine mapping), writable
+
+Capturing:                   not active
+Capture audio:               not active
+Capture screens:             0
+Capture file:                /home/vadim/VirtualBox VMs/vagrant_getting_started_default_1636852324301_49394/vagrant_getting_started_default_1636852324301_49394.webm
+Capture dimensions:          1024x768
+Capture rate:                512kbps
+Capture FPS:                 25kbps
+Capture options:             
+
+Guest:
+
+Configured memory balloon size: 0MB
+
+```
+В частности машине выделено 2 процессорных ядра (это - процессор ВМ Яндекса), 1 Гб ОЗУ
+и накопитель HardDisk (который является диском ВМ Яндекса), также мы видим устройство вывода
+VBoxVGA (реально не существует, т.к. на ВМ Яндекса в моей конфигурации нет аппратного видео),
+4 мб видеопамяти. Кроме того, устройства ввода (клавиатура и мышь на портах PS/2 эмулируются)
+Сетевое взаимодействие - через NAT YandexVM
+Что касается ресурсов, выделенных по умолчанию, то судя по руковоству VirtualBox
+```bash
+8.7. VBoxManage createvm
+...
+The --default option applies a default hardware configuration for the specified guest OS. By default, the VM is created with minimal hardware.
+...
+```
+Чем и объясняются минимальные объемы ОЗУ, видеопамяти.
