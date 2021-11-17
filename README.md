@@ -381,7 +381,7 @@ index 000000000..2533d1316
   
   Я ограничен в аппаратных ресурсах, так как нахожусь в командировке на морском объекте.
   Я написал координатору об этом и ответа не получил пока. Все чем я могу пользоватся
-  в ближейший месяц - это платформы виртуализации. Поэтому я выполняю задания на 
+  в ближайший месяц - это платформы виртуализации. Поэтому я выполняю задания на 
   арендованных YandexVM. Вложенная виртуализация не поддерживается, о чем есть письмо
   из их техподдержки. Компьютера с платформой, которая совместима с 
   hardware virtualization technology у меня здесь нет. На рабочие машины ставить ничего 
@@ -530,3 +530,108 @@ The --default option applies a default hardware configuration for the specified 
 ...
 ```
 Чем и объясняются минимальные объемы ОЗУ, видеопамяти.
+  
+6. В секции VBoxManage Customizations документация есть примеры редакирования Vagrantfile.
+   Для увеличения объема ОЗУ нужно раскомментировать и отредактировать соответствующие строки:
+```bash
+config.vm.provider "virtualbox" do |v|
+  vb.memory = 2048 
+  v.cpus = 2
+end
+```
+  Для добавления ресурсов процесоора - соответственно:
+```bash
+config.vm.provider "virtualbox" do |v|
+  v.customize ["modifyvm", :id, "--cpuexecutioncap", "100"]
+end
+```
+показано, как увеличить предел использования процессора до 100%.
+  
+7. Касаемо подключения по ssh:
+![ssh](03-sysadmin-01-terminal/img/06-ssh.png)
+  
+8. Длину журнала задает HISTFILESIZE ( line 910 in man bash ). 
+   Количество сохраняемых команд задает HISTSIZE ( line 928 in man bash ). 
+   Если ignoreboth является значением переменной HISTCONTROL настроек bash,  
+   то в журнале history не будут сохраняться команды, дублирующие самих 
+   себя, а также команды, начинающиеся с символа пробела.
+  
+9. `{}` являются зарезервированными служебными словами оболочки ( line 165 in man bash )
+  
+10. `touch {0..99999}`. Просмотр количества: `ls | wc -l`
+    ```bash
+    touch {0..299999} 
+    -bash: /usr/bin/touch: Argument list too long
+    ```
+    Причина: длина аргумента команд интерпретатора ограничена до 128 Кбайт ядром Линукс.
+    ```bash
+   grep ARG_MAX /usr/include/linux/limits.h
+   #define ARG_MAX       131072    /* # bytes of args + environ for exec() */
+  
+11. Для поиска в bash набираем `/ \[\[` ( пробел после / ). 
+    `[[ -d /tmp ]]` это оператор оценки/сравнения - определяет существует ли файл из правого операнда 
+     и он является каталогом и выводит 1, если условие истинно и 0 - если ложно. Скрипт для демонстрации: 
+  
+```bash
+#!/bin/bash
+
+echo evaluating /tmp:
+if [[ -d /tmp ]]
+then echo OK
+else echo no directory
+fi
+
+echo evaluating /tm:
+if [[ -d /tm ]]
+then echo OK
+else echo no directory
+fi
+```
+  
+результат работы:
+```bash
+evaluating /tmp:
+OK
+evaluating /tm:
+no directory
+```
+  
+12. Для начала выполним:
+```bash
+$type -a bash
+
+bash is /usr/bin/bash
+bash is /bin/bash 
+```
+Для соответствия вывода type -a заданию, в моей системе придется:
+добавить в начало PATH /tmp/new_path_directory
+В моей системе также не существует испоняемых файлов bin в каталогах, которые нужно 
+добавить в PATH. 
+Вывод команды `echo $PATH`:
+`/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin`
+Поэтому последовательность действий:
+создать исполняемый файл bash в /usr/local/bin/
+создать каталог /tmp/new_path_directory и исполняемый файл bash в нем
+добавить в PATH /tmp/new_path_directory
+убедиться в правильном выводе  type -a bash
+Так как в задании нет требования чтобы вывод type -a bash был одинаковым в других сценариях 
+командной оболочки, экспортировать PATH в окружение env не будем.
+```bash
+vadim@devops-new:~$ sudo touch /usr/local/bin/bash
+vadim@devops-new:~$ sudo chmod +x /usr/local/bin/bash
+vadim@devops-new:~$ mkdir /tmp/new_path_directory && touch /tmp/new_path_directory/bash && chmod +x /tmp/new_path_directory/bash
+vadim@devops-new:~$ PATH="/tmp/new_path_directory:/usr/local/sbin:/usr/local/bin:/usr/sbin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
+vadim@devops-new:~$ type -a bash
+bash is /tmp/new_path_directory/bash
+bash is /usr/local/bin/bash
+bash is /bin/bash
+```
+  
+13. Команда at используется для управления демоном atd и реализует функцию планирования 
+    однократного выполнения определенных команд в определенное время:
+    `at <time> [date]` и затем просто вводятся команды, которые хотим выполнить.
+    Для безопасности в файл /etc/at.deny можно ввести команды, запрещенные для выполнения
+    планировщиком. 
+    Утилита batch устанавливается вместе с пакетом at и реализует тот же функционал, что и
+    at, но она выполнит команды в отличие от at при снижении нагрузки системы ниже 1.5
+    либо значения указанного в вызове atd.
