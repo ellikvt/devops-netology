@@ -564,10 +564,10 @@ end
     -bash: /usr/bin/touch: Argument list too long
     ```
     Причина: длина аргумента команд интерпретатора ограничена до 128 Кбайт ядром Линукс.
-    ```bash
-   grep ARG_MAX /usr/include/linux/limits.h  
-   #define ARG_MAX       131072    /* # bytes of args + environ for exec() */  
-   ```
+```bash  
+grep ARG_MAX /usr/include/linux/limits.h  
+#define ARG_MAX       131072    /* # bytes of args + environ for exec() */  
+```
   
 11. Для поиска в bash набираем `/ \[\[` ( пробел после / ). 
     `[[ -d /tmp ]]` это оператор оценки/сравнения - определяет существует ли файл из правого операнда 
