@@ -565,8 +565,9 @@ end
     ```
     Причина: длина аргумента команд интерпретатора ограничена до 128 Кбайт ядром Линукс.
     ```bash
-   grep ARG_MAX /usr/include/linux/limits.h
-   #define ARG_MAX       131072    /* # bytes of args + environ for exec() */
+   grep ARG_MAX /usr/include/linux/limits.h  
+   #define ARG_MAX       131072    /* # bytes of args + environ for exec() */  
+   ```
   
 11. Для поиска в bash набираем `/ \[\[` ( пробел после / ). 
     `[[ -d /tmp ]]` это оператор оценки/сравнения - определяет существует ли файл из правого операнда 
@@ -606,16 +607,16 @@ bash is /bin/bash
 Для соответствия вывода type -a заданию, в моей системе придется:
 добавить в начало PATH /tmp/new_path_directory
 В моей системе также не существует испоняемых файлов bin в каталогах, которые нужно 
-добавить в PATH. 
-Вывод команды `echo $PATH`:
-`/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin`
-Поэтому последовательность действий:
-создать исполняемый файл bash в /usr/local/bin/
-создать каталог /tmp/new_path_directory и исполняемый файл bash в нем
-добавить в PATH /tmp/new_path_directory
-убедиться в правильном выводе  type -a bash
-Так как в задании нет требования чтобы вывод type -a bash был одинаковым в других сценариях 
-командной оболочки, экспортировать PATH в окружение env не будем.
+добавить в PATH.  
+Вывод команды `echo $PATH`:  
+`/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin`  
+Поэтому последовательность действий:  
+создать исполняемый файл bash в /usr/local/bin/  
+создать каталог /tmp/new_path_directory и исполняемый файл bash в нем  
+добавить в PATH /tmp/new_path_directory  
+убедиться в правильном выводе  type -a bash  
+Так как в задании нет требования чтобы вывод type -a bash был одинаковым в других сценариях   
+командной оболочки, экспортировать PATH в окружение env не будем.  
 ```bash
 vadim@devops-new:~$ sudo touch /usr/local/bin/bash
 vadim@devops-new:~$ sudo chmod +x /usr/local/bin/bash
@@ -631,7 +632,7 @@ bash is /bin/bash
     однократного выполнения определенных команд в определенное время:
     `at <time> [date]` и затем просто вводятся команды, которые хотим выполнить.
     Для безопасности в файл /etc/at.deny можно ввести команды, запрещенные для выполнения
-    планировщиком. 
+    планировщиком.  
     Утилита batch устанавливается вместе с пакетом at и реализует тот же функционал, что и
     at, но она выполнит команды в отличие от at при снижении нагрузки системы ниже 1.5
     либо значения указанного в вызове atd.
