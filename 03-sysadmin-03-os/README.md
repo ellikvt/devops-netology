@@ -343,10 +343,114 @@ libpthread.so.0 - также стандартная библиотека С
 
    ![02.png](img/02.png)  
   
-   Параметра -n команды watch можно увеличить, чтобы меньше загружать ЦП.  
+   Параметры -n команды watch можно увеличить, чтобы меньше загружать ЦП.  
     
-5.  Зомби-процессы занимают только записи в таблице процессов, так как их PCB (program control block) системой не удаляются. 
+4.  Зомби-процессы занимают только записи в таблице процессов, так как их PCB (program control block) системой не удаляются. 
     Ведь процессы не завершены и ожидают от родителей считывания их кодов завершения. 
     Однако в Linux есть ограничение на размер таблицы для каждого пользователя и системы в целом.  
    
-6. 
+5. Результаты работы opensnoop-bpfcc в течение 1-й секунды после запуска:  
+```bash
+vagrant@vagrant:~$ sudo opensnoop-bpfcc -d 1
+PID    COMM               FD ERR PATH
+814    vminfo              5   0 /var/run/utmp
+628    dbus-daemon        -1   2 /usr/local/share/dbus-1/system-services
+628    dbus-daemon        20   0 /usr/share/dbus-1/system-services
+628    dbus-daemon        -1   2 /lib/dbus-1/system-services
+628    dbus-daemon        20   0 /var/lib/snapd/dbus-1/system-services/
+632    irqbalance          6   0 /proc/interrupts
+632    irqbalance          6   0 /proc/stat
+632    irqbalance          6   0 /proc/irq/20/smp_affinity
+632    irqbalance          6   0 /proc/irq/0/smp_affinity
+632    irqbalance          6   0 /proc/irq/1/smp_affinity
+632    irqbalance          6   0 /proc/irq/8/smp_affinity
+632    irqbalance          6   0 /proc/irq/12/smp_affinity
+632    irqbalance          6   0 /proc/irq/14/smp_affinity
+632    irqbalance          6   0 /proc/irq/15/smp_affinity
+```  
+   Результаты - не статичны. Но процессы, приведенные на скрине выше, присутствуют
+   в результате работы opensnoop-bpfcc постоянно. Система повторяет с периодичностью
+   1-2 секунды системный вызов open() на вышеприведенные файлы.
+  
+6. Uname -a использует системный вызов uname:  
+```bash
+vagrant@vagrant:~$ strace -o tracing-file /bin/bash -c 'uname -a'
+Linux vagrant 5.4.0-91-generic #102-Ubuntu SMP Fri Nov 5 16:31:28 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+vagrant@vagrant:~$ cat tracing-file | grep uname
+execve("/bin/bash", ["/bin/bash", "-c", "uname -a"], 0x7ffcbe950740 /* 32 vars */) = 0
+uname({sysname="Linux", nodename="vagrant", ...}) = 0
+stat("/usr/local/sbin/uname", 0x7ffd8c04b660) = -1 ENOENT (No such file or directory)
+stat("/usr/local/bin/uname", 0x7ffd8c04b660) = -1 ENOENT (No such file or directory)
+stat("/usr/sbin/uname", 0x7ffd8c04b660) = -1 ENOENT (No such file or directory)
+stat("/usr/bin/uname", {st_mode=S_IFREG|0755, st_size=39288, ...}) = 0
+stat("/usr/bin/uname", {st_mode=S_IFREG|0755, st_size=39288, ...}) = 0
+access("/usr/bin/uname", X_OK)          = 0
+stat("/usr/bin/uname", {st_mode=S_IFREG|0755, st_size=39288, ...}) = 0
+access("/usr/bin/uname", R_OK)          = 0
+stat("/usr/bin/uname", {st_mode=S_IFREG|0755, st_size=39288, ...}) = 0
+stat("/usr/bin/uname", {st_mode=S_IFREG|0755, st_size=39288, ...}) = 0
+access("/usr/bin/uname", X_OK)          = 0
+stat("/usr/bin/uname", {st_mode=S_IFREG|0755, st_size=39288, ...}) = 0
+access("/usr/bin/uname", R_OK)          = 0
+execve("/usr/bin/uname", ["uname", "-a"], 0x560566f58a90 /* 32 vars */) = 0
+uname({sysname="Linux", nodename="vagrant", ...}) = 0
+uname({sysname="Linux", nodename="vagrant", ...}) = 0
+uname({sysname="Linux", nodename="vagrant", ...}) = 0
+```
+   Цитата из man 2 uname по альтернативному способу получения версии ядра и релиза ОС:
+
+uname()  returns  system  information  in  the  structure pointed to by buf.  
+The utsname struct is defined in <sys/utsname.h>:  
+
+uname()  returns  system  information  in  the  structure pointed to by buf.  
+The utsname struct is defined in <sys/utsname.h>:  
+
+.. далее идет краткое описание аргументов струкруры и комментарии, в которых:  
+   Part of the utsname information is also accessible via /proc/sys/kernel/{ostype,  
+   hostname, osrelease, version, domainname}.
+```bash
+vagrant@vagrant:~$ cat /proc/sys/kernel/version /proc/sys/kernel/osrelease
+#102-Ubuntu SMP Fri Nov 5 16:31:28 UTC 2021
+5.4.0-91-generic
+```
+  
+7. Команды, разделенные `;` выполняются друг за другом, независимо от результата. 
+   То есть результат команды ( выполнена/не выполнена ) не влияет на следующую команду,
+   которая в любом случае будет выполнена.
+   Команды, разделенные  && выполняются друг за другом, только в случае успешного
+   выполнения каждой команды в цепочке. Выполнение цепочки команд будет прервано
+   на той команде, которая выполнилась неудачно. 
+   Успешным как правило является выполнение команды с кодом возврата 0 ( но не всегда ).
+```bash
+adim@vadim-Lenovo-IdeaPad-L340-15API:~$ ls /md && echo OK
+ls: cannot access '/md': No such file or directory
+vadim@vadim-Lenovo-IdeaPad-L340-15API:~$ ls /md ; echo OK
+ls: cannot access '/md': No such file or directory
+OK
+```
+
+  Применение в bash `&&` имеет смысл и в случае, если выполнено `set -e`.
+  Возврат командами нулевого кода - сообщение для операционной системы об успешном
+  завершении программы. Не всегда этот принцип соблюдается при плохом стиле
+  программирования, а также могут быть ошибки в коде программы.
+  
+8. -e - Немедленно завершить работу, если любая из команд завершается с ненулевым статусом.  
+   -u - Рассматривать переменные, которые не были инициализированы, как ошибку при их подстановке  
+   -x - Вывести команды и их аргументы в том порядке, в котором они выполнены  
+   -o - указывает на наличие опции ( option-name ) с именем, имя опции задается установкой
+        переменной из конкретного списка
+   pipefail - имя опции ( option-name ).  В данном случае означает, что возвращаемое
+   конвейером команд значение - это статус последней команды с кодом возврата, не равным
+   нулю, либо нуль в случае когда команды не завершались с ненулевым кодом.  
+   При работе сценариев в режиме, установленном командой `set -euxo pipefail` 
+   будут применены более строгие правила контроля выполнения сценария с перехватом ошибок
+   выполнения, ошибок инициализации переменных, выводом информации для отладки и поиска
+   проблемных команд и их аргументов.  
+   
+9. В гостевой системе Ubuntu 20.04, работающей на моей ВМ наиболее часто встретился статус процесса:  
+      I    Idle kernel thread  
+   также частый статус:  
+      S    interruptible sleep (waiting for an event to complete)  
+   В основной системе Ubuntu 18.04, в которой работает гостевая ОС, процессов пользователя    больше и тотально более часто встречается статус процессов:  
+      S    interruptible sleep (waiting for an event to complete)
+  
