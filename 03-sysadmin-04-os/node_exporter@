@@ -1,0 +1,14 @@
+# /etc/systemd/system/node_exporter@.service
+[Unit]
+Description=node metrics exporter
+After=network.target
+
+[Service]
+EnvironmentFile=-/etc/default/node_exporter
+ExecStart=/usr/sbin/node_exporter $OPTIONS %i
+Type=exec
+
+[Install]
+WantedBy=multi-user.target
+
+
