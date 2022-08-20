@@ -1,0 +1,22 @@
+#!/usr/bin/env python3
+#script checks if the files are modified in current repo or in the repo which is given by script argument 
+import os
+from sys import argv
+
+try:
+    script_name, parameter1 = argv
+except ValueError:
+    print ('There is no parameter. The internal data which is located in the script will be used.')
+    bash_command_item1 = 'cd ~/PycharmProjects/devops-netology'
+else:
+    print (f'parameter is {parameter1}')
+    bash_command_item1 = f'cd {parameter1}'
+
+bash_command = [bash_command_item1, "git status"]
+result_os = os.popen(' && '.join(bash_command)).read()
+is_change = False
+for result in result_os.split('\n'):
+    if result.find('modified') != -1:
+        prepare_result = os.popen('pwd').read() + '/' + result.replace('\tmodified:   ', '')
+        prepare_result = prepare_result.split('\n')
+        print(''.join(prepare_result))
