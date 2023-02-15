@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-02-15T13:10:30.825Z" agent="5.0 (X11)" etag="5Qz2M1N4Rca8s6i34Q3Q" version="20.8.20" type="github">
+<mxfile host="app.diagrams.net" modified="2023-02-15T13:12:59.209Z" agent="5.0 (X11)" etag="7v3c9AdtfdU0BsdWHyT2" version="20.8.20" type="github">
   <diagram name="Page-1" id="bfe91b75-5d2c-26a0-9c1d-138518896778">
-    <mxGraphModel dx="1107" dy="610" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" background="none" math="0" shadow="0">
+    <mxGraphModel dx="2148" dy="578" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" background="none" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -73,7 +73,7 @@
         <mxCell id="IS_u3SnMxJRdPHFmTj9b-4" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.077;exitY=0.857;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="7c3789c024ecab99-9">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="700" y="380" as="sourcePoint" />
-            <mxPoint x="860" y="380" as="targetPoint" />
+            <mxPoint x="50" y="193" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="IS_u3SnMxJRdPHFmTj9b-5" value="to 1st floor network 2pr cable" style="edgeLabel;resizable=0;html=1;align=center;verticalAlign=middle;" connectable="0" vertex="1" parent="IS_u3SnMxJRdPHFmTj9b-4">
@@ -82,7 +82,7 @@
         <mxCell id="IS_u3SnMxJRdPHFmTj9b-6" value="1ch" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" connectable="0" vertex="1" parent="IS_u3SnMxJRdPHFmTj9b-4">
           <mxGeometry x="-1" relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="IS_u3SnMxJRdPHFmTj9b-7" value="Target" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" connectable="0" vertex="1" parent="IS_u3SnMxJRdPHFmTj9b-4">
+        <mxCell id="IS_u3SnMxJRdPHFmTj9b-7" value="SmartBox TV" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" connectable="0" vertex="1" parent="IS_u3SnMxJRdPHFmTj9b-4">
           <mxGeometry x="1" relative="1" as="geometry" />
         </mxCell>
       </root>
